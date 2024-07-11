@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-nginx
+  # these labels belongs to replicaset resource
+  labels:
+    purpose : ingress
+    name : app1
+spec:
+  # modify replicas according to your case
+  selector:
+    matchLabels:
+      purpose : ingress
+      name : app1
+  # below is pod definition    
+  template:
+    metadata:
+    # these labels belongs to pod
+      labels:
+        purpose : ingress
+        name: app1
+    spec:
+      containers:
+      - name: app1
+        image: iamraja/nginx:v1.1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+spec:
+  selector:
+    purpose : ingress
+    name: app1
+  ports:
+    - protocol: TCP
+      port: 80 #service-port
+      targetPort: 89 #targetport
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+    alb.ingress.kubernetes.io/group.name: Rajapeta
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "app1.rajapeta.cloud" # ALB Rule
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app1 # ALB Target group
+            port:
+              number: 80
+   
