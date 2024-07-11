@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app2
-        image: iamraja/nginx:v1.1
+        image: iamraja/nginx:v2.1
 ---
 apiVersion: v1
 kind: Service
