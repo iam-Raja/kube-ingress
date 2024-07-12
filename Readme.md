@@ -1,5 +1,8 @@
 ### EKS Ingress-AWS Load Balancer Controller installation ###
 
+![Screenshot 2024-07-12 122123](https://github.com/user-attachments/assets/ad241ae4-cc56-45c4-99fe-559d0f192323)
+
+
 * 1.Create an IAM OIDC provider. You can skip this step if you already have one for your cluster.
 ```
 eksctl utils associate-iam-oidc-provider \
